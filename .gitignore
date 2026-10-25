@@ -1,0 +1,30 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# node / angular
+node_modules/
+frontend/dist/
+frontend/.angular/
+
+# editor / os
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# AI tooling (kept local)
+CLAUDE.md
+RULES.md
+docs/
+.claude/
+.agent/
+.gemini/
