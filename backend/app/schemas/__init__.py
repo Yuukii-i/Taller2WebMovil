@@ -1,4 +1,6 @@
+from .comment import CommentIn, CommentOut, PageCommentOut
 from .game import GameCard, GameDetail, GenreOut, GenreSimple, PageGameCard, StatusCounts
+from .home import GameCountItem, HomeOut, TopRatedGameItem
 from .library import LibraryEntryOut, LibraryStatusUpdate, PageUserLibraryItem, UserLibraryItem
 from .review import (
     Author,
@@ -19,14 +21,19 @@ from .user import (
 
 __all__ = [
     "Author",
+    "CommentIn",
+    "CommentOut",
     "GameCard",
+    "GameCountItem",
     "GameDetail",
     "GenreOut",
     "GenreSimple",
+    "HomeOut",
     "LibraryCounts",
     "LibraryEntryOut",
     "LibraryStatusUpdate",
     "LoginIn",
+    "PageCommentOut",
     "PageGameCard",
     "PageReviewOut",
     "PageReviewWithGame",
@@ -37,6 +44,7 @@ __all__ = [
     "ReviewWithGame",
     "StatusCounts",
     "TokenOut",
+    "TopRatedGameItem",
     "UserLibraryItem",
     "UserOut",
     "UserPublic",

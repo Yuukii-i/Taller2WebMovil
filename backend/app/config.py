@@ -27,3 +27,5 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+HOME_MIN_REVIEWS: int = 3

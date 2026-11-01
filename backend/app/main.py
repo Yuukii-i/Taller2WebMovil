@@ -3,8 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.routers.auth import router as auth_router
+from app.routers.comments import router as comments_router
 from app.routers.games import router as games_router
 from app.routers.genres import router as genres_router
+from app.routers.home import router as home_router
 from app.routers.library import router as library_router
 from app.routers.reviews import router as reviews_router
 from app.routers.users import router as users_router
@@ -25,8 +27,10 @@ app.include_router(auth_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 app.include_router(library_router, prefix="/api")
 app.include_router(reviews_router, prefix="/api")
+app.include_router(comments_router, prefix="/api")
 app.include_router(games_router, prefix="/api")
 app.include_router(genres_router, prefix="/api")
+app.include_router(home_router, prefix="/api")
 
 
 @app.get("/api/health")
