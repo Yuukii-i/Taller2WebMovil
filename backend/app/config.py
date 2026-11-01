@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     jwt_secret: str
     jwt_expire_min: int = 60
     cors_origins: str = "http://localhost:4200"
+    rawg_api_key: str = ""
 
     @field_validator("jwt_secret")
     @classmethod

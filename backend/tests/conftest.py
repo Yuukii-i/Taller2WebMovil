@@ -48,6 +48,9 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_
 # Create all tables on test DB once per session
 Base.metadata.create_all(bind=test_engine)
 
+# Ensure tests run with RAWG key empty by default so no real network is used
+settings.rawg_api_key = ""
+
 
 @pytest.fixture(autouse=True)
 def clean_db() -> Generator[None, None, None]:

@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.routers.auth import router as auth_router
+from app.routers.games import router as games_router
+from app.routers.genres import router as genres_router
 from app.routers.users import router as users_router
 
 app = FastAPI(title="Taller 2 Web Movil API")
@@ -19,6 +21,8 @@ app.add_middleware(
 
 app.include_router(auth_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
+app.include_router(games_router, prefix="/api")
+app.include_router(genres_router, prefix="/api")
 
 
 @app.get("/api/health")
