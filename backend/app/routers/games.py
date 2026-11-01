@@ -11,6 +11,7 @@ from app.models.library import LibraryEntry
 from app.models.review import Review
 from app.models.user import User
 from app.schemas.game import GameCard, GameDetail, GenreSimple, PageGameCard, StatusCounts
+from app.services.game_cards import get_game_review_stats_subquery
 from app.services.game_import import ensure_description, upsert_games
 from app.services.rawg import RawgError, search_games
 
@@ -70,17 +71,7 @@ def list_games(
         select(func.count(Game.id)).where(*conditions)
     ) or 0
 
-    # Review stats subquery grouped by game_id
-    stats_subq = (
-        select(
-            Review.game_id.label("g_id"),
-            func.round(func.avg(Review.score), 1).label("avg_score"),
-            func.count(Review.id).label("review_count"),
-        )
-        .group_by(Review.game_id)
-        .subquery()
-    )
-
+    stats_subq = get_game_review_stats_subquery()
     avg_score_col = stats_subq.c.avg_score
     review_count_col = func.coalesce(stats_subq.c.review_count, 0)
 

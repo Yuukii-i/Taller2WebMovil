@@ -78,3 +78,25 @@ def client(db_session: Session) -> Generator[TestClient, None, None]:
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def auth_user_factory(db_session: Session):
+    from app.models.user import User
+    from app.services.security import create_access_token, hash_password
+
+    def _create(username: str = "testuser", email: str = "test@example.com") -> tuple[User, str, dict[str, str]]:
+        user = User(
+            username=username,
+            email=email,
+            password_hash=hash_password("password123"),
+        )
+        db_session.add(user)
+        db_session.commit()
+        db_session.refresh(user)
+        token = create_access_token(user.id)
+        headers = {"Authorization": f"Bearer {token}"}
+        return user, token, headers
+
+    return _create
+
