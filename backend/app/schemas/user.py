@@ -21,7 +21,7 @@ class LoginIn(BaseModel):
 class UserOut(BaseModel):
     id: int
     username: str
-    email: EmailStr
+    email: str
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
