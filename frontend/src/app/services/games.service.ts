@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { GameCard, Genre, Page } from '../models';
+import { GameCard, GameDetail, Genre, Page } from '../models';
 
 export interface GameListParams {
   q?: string | null;
@@ -19,6 +19,14 @@ export class GamesService {
 
   genres() {
     return httpResource<Genre[]>(() => `${this.baseUrl}/genres`);
+  }
+
+  detail(idFn: () => number | string | null | undefined) {
+    return httpResource<GameDetail>(() => {
+      const id = idFn();
+      if (!id) return undefined;
+      return `${this.baseUrl}/games/${id}`;
+    });
   }
 
   list(paramsFn: () => GameListParams) {

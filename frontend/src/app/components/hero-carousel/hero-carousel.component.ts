@@ -9,10 +9,13 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HeroSlide } from './hero-carousel.types';
+import { AuthStore } from '../../services/auth.store';
+import { LibraryService } from '../../services/library.service';
 
 @Component({
   selector: 'app-hero-carousel',
@@ -91,6 +94,14 @@ import { HeroSlide } from './hero-carousel.types';
                     >
                       Read reviews
                     </a>
+                    <button
+                      mat-button
+                      type="button"
+                      class="btn-secondary"
+                      (click)="onWishlist(slide.game.id)"
+                    >
+                      Add to wishlist
+                    </button>
                   </div>
                 </div>
               </div>
@@ -363,6 +374,33 @@ import { HeroSlide } from './hero-carousel.types';
           outline-offset: 2px;
         }
       }
+
+      .btn-secondary {
+        background-color: transparent !important;
+        color: var(--text) !important;
+        border: 1px solid rgba(242, 243, 245, 0.4) !important;
+        border-radius: var(--radius-pill) !important;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 13px !important;
+        letter-spacing: 0.08em;
+        padding: 0 24px !important;
+        height: 44px !important;
+        line-height: 44px !important;
+        backdrop-filter: blur(8px);
+        transition: transform 150ms ease, background-color 150ms ease, border-color 150ms ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          background-color: rgba(255, 255, 255, 0.08) !important;
+          border-color: var(--text) !important;
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--accent);
+          outline-offset: 2px;
+        }
+      }
     }
 
     /* Arrows */
@@ -539,6 +577,25 @@ export class HeroCarouselComponent implements OnInit {
   private isUserInteracting = false;
 
   private readonly destroyRef = inject(DestroyRef);
+  private readonly authStore = inject(AuthStore);
+  private readonly libraryService = inject(LibraryService);
+  private readonly router = inject(Router);
+  private readonly snackBar = inject(MatSnackBar);
+
+  onWishlist(gameId: number): void {
+    if (!this.authStore.isLoggedIn()) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: '/' } });
+      return;
+    }
+    this.libraryService.set(gameId, 'wishlist').subscribe({
+      next: () => {
+        this.snackBar.open('Added to Wishlist', 'Close', { duration: 3000 });
+      },
+      error: () => {
+        this.snackBar.open('Failed to update wishlist', 'Close', { duration: 3000 });
+      },
+    });
+  }
 
   readonly currentSlide = computed(() => {
     const list = this.slides();

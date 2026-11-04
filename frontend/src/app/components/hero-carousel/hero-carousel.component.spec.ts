@@ -1,8 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { of } from 'rxjs';
 import { HeroCarouselComponent } from './hero-carousel.component';
 import { HeroSlide, buildSlides } from './hero-carousel.types';
 import { GameCard, Home } from '../../models';
+import { AuthStore } from '../../services/auth.store';
+import { LibraryService } from '../../services/library.service';
 
 describe('Hero Carousel & buildSlides', () => {
   const makeGame = (id: number, title: string, avg_score = 9.0): GameCard => ({
@@ -103,10 +107,25 @@ describe('Hero Carousel & buildSlides', () => {
       { game: makeGame(3, 'Mario'), kicker: 'Played right now', stat: '100 playing' },
     ];
 
+    let mockAuthStore: { isLoggedIn: ReturnType<typeof vi.fn> };
+    let mockLibraryService: { set: ReturnType<typeof vi.fn> };
+    let mockSnackBar: { open: ReturnType<typeof vi.fn> };
+
     beforeEach(async () => {
+      mockAuthStore = { isLoggedIn: vi.fn().mockReturnValue(true) };
+      mockLibraryService = {
+        set: vi.fn().mockReturnValue(of({ game_id: 1, status: 'wishlist', updated_at: 'now' })),
+      };
+      mockSnackBar = { open: vi.fn() };
+
       await TestBed.configureTestingModule({
         imports: [HeroCarouselComponent],
-        providers: [provideRouter([])],
+        providers: [
+          provideRouter([]),
+          { provide: AuthStore, useValue: mockAuthStore },
+          { provide: LibraryService, useValue: mockLibraryService },
+          { provide: MatSnackBar, useValue: mockSnackBar },
+        ],
       }).compileComponents();
     });
 
@@ -175,6 +194,41 @@ describe('Hero Carousel & buildSlides', () => {
       } finally {
         window.matchMedia = originalMatchMedia;
       }
+    });
+
+    it('calls libraryService.set and shows snackbar when logged in user clicks Add to wishlist', () => {
+      mockAuthStore.isLoggedIn.mockReturnValue(true);
+
+      const fixture = TestBed.createComponent(HeroCarouselComponent);
+      fixture.componentRef.setInput('slides', mockSlides);
+      fixture.detectChanges();
+
+      const wishlistBtn: HTMLButtonElement = fixture.nativeElement.querySelector('.btn-secondary');
+      expect(wishlistBtn).toBeTruthy();
+      expect(wishlistBtn.textContent).toContain('Add to wishlist');
+
+      wishlistBtn.click();
+      fixture.detectChanges();
+
+      expect(mockLibraryService.set).toHaveBeenCalledWith(1, 'wishlist');
+      expect(mockSnackBar.open).toHaveBeenCalledWith('Added to Wishlist', 'Close', expect.any(Object));
+    });
+
+    it('navigates to /login?returnUrl=/ when logged out user clicks Add to wishlist', () => {
+      mockAuthStore.isLoggedIn.mockReturnValue(false);
+      const router = TestBed.inject(Router);
+      const navigateSpy = vi.spyOn(router, 'navigate');
+
+      const fixture = TestBed.createComponent(HeroCarouselComponent);
+      fixture.componentRef.setInput('slides', mockSlides);
+      fixture.detectChanges();
+
+      const wishlistBtn: HTMLButtonElement = fixture.nativeElement.querySelector('.btn-secondary');
+      wishlistBtn.click();
+      fixture.detectChanges();
+
+      expect(mockLibraryService.set).not.toHaveBeenCalled();
+      expect(navigateSpy).toHaveBeenCalledWith(['/login'], { queryParams: { returnUrl: '/' } });
     });
   });
 });
