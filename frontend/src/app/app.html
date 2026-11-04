@@ -1,0 +1,149 @@
+<mat-sidenav-container class="app-layout">
+  <mat-sidenav #drawer class="app-drawer" mode="over" [opened]="false">
+    <div class="drawer-header">
+      <span class="drawer-brand" (click)="drawer.close()" routerLink="/">{{ siteName }}</span>
+      <button mat-icon-button (click)="drawer.close()" aria-label="Close navigation drawer">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <form class="drawer-search" (ngSubmit)="onSearch(searchQuery, drawer)">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        type="search"
+        placeholder="Search games..."
+        [(ngModel)]="searchQuery"
+        name="mobileSearch"
+        autocomplete="off"
+      />
+    </form>
+
+    <mat-nav-list class="drawer-nav">
+      <a mat-list-item routerLink="/games" (click)="drawer.close()">
+        <mat-icon matListItemIcon>sports_esports</mat-icon>
+        <span matListItemTitle>Games</span>
+      </a>
+      <a mat-list-item routerLink="/library" (click)="drawer.close()">
+        <mat-icon matListItemIcon>favorite</mat-icon>
+        <span matListItemTitle>My Library</span>
+      </a>
+
+      <div class="drawer-divider"></div>
+
+      @if (authStore.isLoggedIn()) {
+        <div class="drawer-user-info">
+          <span class="user-handle">&#64;{{ authStore.user()?.username }}</span>
+        </div>
+        <button mat-list-item (click)="logout(); drawer.close()">
+          <mat-icon matListItemIcon>logout</mat-icon>
+          <span matListItemTitle>Log out</span>
+        </button>
+      } @else {
+        <a mat-list-item routerLink="/login" (click)="drawer.close()">
+          <mat-icon matListItemIcon>login</mat-icon>
+          <span matListItemTitle>Log in</span>
+        </a>
+        <a mat-list-item routerLink="/register" (click)="drawer.close()">
+          <mat-icon matListItemIcon>person_add</mat-icon>
+          <span matListItemTitle>Sign up</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="app-main-content">
+    <mat-toolbar
+      class="app-toolbar"
+      [class.transparent-toolbar]="isTransparentToolbar()"
+    >
+      @if (isMobile()) {
+        <button
+          mat-icon-button
+          class="hamburger-btn"
+          (click)="drawer.toggle()"
+          aria-label="Open navigation menu"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
+
+      <a class="brand-link" routerLink="/">{{ siteName }}</a>
+
+      @if (!isMobile()) {
+        <nav class="nav-links">
+          <a routerLink="/games" routerLinkActive="active" class="nav-link">Games</a>
+        </nav>
+
+        <span class="toolbar-spacer"></span>
+
+        <form class="search-form" (ngSubmit)="onSearch(searchQuery)">
+          <mat-icon class="search-icon">search</mat-icon>
+          <input
+            type="search"
+            placeholder="Search games..."
+            [(ngModel)]="searchQuery"
+            name="desktopSearch"
+            autocomplete="off"
+          />
+        </form>
+
+        <a
+          mat-icon-button
+          routerLink="/library"
+          class="icon-action"
+          aria-label="My Library"
+          title="My Library"
+        >
+          <mat-icon>favorite_border</mat-icon>
+        </a>
+
+        @if (authStore.isLoggedIn()) {
+          <button
+            mat-button
+            [matMenuTriggerFor]="userMenu"
+            class="user-menu-btn"
+            aria-label="User menu"
+          >
+            <span class="username-label">&#64;{{ authStore.user()?.username }}</span>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #userMenu="matMenu">
+            <a mat-menu-item routerLink="/library">
+              <mat-icon>favorite</mat-icon>
+              <span>My library</span>
+            </a>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+        } @else {
+          <div class="auth-buttons">
+            <a mat-button routerLink="/login" class="btn-secondary">Log in</a>
+            <a mat-button routerLink="/register" class="btn-primary">Sign up</a>
+          </div>
+        }
+      } @else {
+        <span class="toolbar-spacer"></span>
+        <a
+          mat-icon-button
+          routerLink="/library"
+          class="icon-action"
+          aria-label="My Library"
+        >
+          <mat-icon>favorite_border</mat-icon>
+        </a>
+      }
+    </mat-toolbar>
+
+    <main class="page-body">
+      <router-outlet></router-outlet>
+    </main>
+
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <span>Data from <a href="https://rawg.io" target="_blank" rel="noopener noreferrer">RAWG</a></span>
+      </div>
+    </footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>
