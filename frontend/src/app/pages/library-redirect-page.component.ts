@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthStore } from '../services/auth.store';
 
@@ -7,15 +7,22 @@ import { AuthStore } from '../services/auth.store';
   standalone: true,
   template: ``,
 })
-export class LibraryRedirectPageComponent {
-  constructor() {
-    const authStore = inject(AuthStore);
-    const router = inject(Router);
-    const username = authStore.user()?.username;
+export class LibraryRedirectPageComponent implements OnInit {
+  private readonly authStore = inject(AuthStore);
+  private readonly router = inject(Router);
+
+  ngOnInit(): void {
+    const username = this.authStore.user()?.username;
     if (username) {
-      router.navigate(['/u', username]);
+      this.router.navigate(['/u', username], {
+        queryParams: { tab: 'wishlist' },
+        replaceUrl: true,
+      });
     } else {
-      router.navigate(['/']);
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: '/library' },
+        replaceUrl: true,
+      });
     }
   }
 }

@@ -34,6 +34,14 @@ export class ReviewsService {
     });
   }
 
+  detail(idFn: () => number | string | null | undefined) {
+    return httpResource<ReviewWithGame>(() => {
+      const id = idFn();
+      if (!id) return undefined;
+      return `${this.baseUrl}/reviews/${id}`;
+    });
+  }
+
   getOne(id: number): Observable<ReviewWithGame> {
     return this.http.get<ReviewWithGame>(`${this.baseUrl}/reviews/${id}`);
   }
