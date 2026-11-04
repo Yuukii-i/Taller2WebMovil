@@ -28,3 +28,8 @@ docs/
 .claude/
 .agent/
 .gemini/
+
+# graphify (local experiment)
+graphify-out/
+.graphifyignore
+*graphify*
