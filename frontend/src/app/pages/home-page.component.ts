@@ -2,12 +2,16 @@ import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HomeService } from '../services/home.service';
+import { GamesService } from '../services/games.service';
 import { StateViewComponent } from '../components/state-view.component';
 import { RankedShelfComponent } from '../components/ranked-shelf/ranked-shelf.component';
 import { ReviewCardComponent } from '../components/review-card/review-card.component';
 import { GameShelfComponent, ShelfItem } from '../components/game-shelf/game-shelf.component';
 import { GenreTilesComponent } from '../components/genre-tiles/genre-tiles.component';
 import { CompactListComponent } from '../components/compact-list/compact-list.component';
+import { HeroCarouselComponent } from '../components/hero-carousel/hero-carousel.component';
+import { WelcomeStripComponent } from '../components/welcome-strip/welcome-strip.component';
+import { buildSlides } from '../components/hero-carousel/hero-carousel.types';
 
 @Component({
   selector: 'app-home-page',
@@ -21,12 +25,17 @@ import { CompactListComponent } from '../components/compact-list/compact-list.co
     GameShelfComponent,
     GenreTilesComponent,
     CompactListComponent,
+    HeroCarouselComponent,
+    WelcomeStripComponent,
   ],
   template: `
-    <div class="home-container">
-      <!-- HERO & WELCOME STRIP SLOT (Reserved for F2b) -->
-      <div class="hero-slot" aria-hidden="true"></div>
+    @if (!isPageEmpty() && heroSlides().length > 0) {
+      <div class="hero-wrapper">
+        <app-hero-carousel [slides]="heroSlides()"></app-hero-carousel>
+      </div>
+    }
 
+    <div class="home-container">
       <app-state-view
         [loading]="homeResource.isLoading()"
         [error]="homeErrorMessage()"
@@ -34,6 +43,8 @@ import { CompactListComponent } from '../components/compact-list/compact-list.co
         emptyMessage="No games or reviews yet. Check back soon!"
         (retry)="reload()"
       >
+        <app-welcome-strip></app-welcome-strip>
+
         @if (homeData(); as data) {
           <div class="home-sections">
             <!-- 3. Top rated shelf -->
@@ -117,18 +128,21 @@ import { CompactListComponent } from '../components/compact-list/compact-list.co
     :host {
       display: block;
     }
+    .hero-wrapper {
+      margin-top: -64px;
+      padding-top: 64px;
+      width: 100%;
+      background-color: var(--bg);
+    }
     .home-container {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 24px 16px 64px;
+      padding: 32px 16px 64px;
     }
     @media (min-width: 768px) {
       .home-container {
-        padding: 32px 40px 80px;
+        padding: 40px 40px 80px;
       }
-    }
-    .hero-slot {
-      display: none;
     }
     .home-sections {
       display: flex;
@@ -184,12 +198,22 @@ import { CompactListComponent } from '../components/compact-list/compact-list.co
 })
 export class HomePageComponent {
   private readonly homeService = inject(HomeService);
+  private readonly gamesService = inject(GamesService);
 
   readonly homeResource = this.homeService.home();
   readonly genresResource = this.homeService.genres();
+  readonly fallbackResource = this.gamesService.list(() => ({
+    sort: 'rating',
+    page_size: 5,
+  }));
 
   readonly homeData = computed(() => this.homeResource.value());
   readonly genres = computed(() => this.genresResource.value() || []);
+  readonly fallbackGames = computed(() => this.fallbackResource.value()?.items || []);
+
+  readonly heroSlides = computed(() =>
+    buildSlides(this.homeData(), this.fallbackGames())
+  );
 
   readonly homeErrorMessage = computed(() => {
     const err = this.homeResource.error();
@@ -230,5 +254,6 @@ export class HomePageComponent {
   reload(): void {
     this.homeResource.reload();
     this.genresResource.reload();
+    this.fallbackResource.reload();
   }
 }
