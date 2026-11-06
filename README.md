@@ -1,20 +1,33 @@
 # TEMPORARY: project status (delete this section before the final delivery)
 
-Done so far:
-- Database schema (users, games, genres, library entries, reviews, comments) with Alembic migrations.
-- Backend API: register/login/logout with JWT, games and genres, IGDB import, library statuses, reviews, comments and the home page lists. Backend tests pass.
-- Seed scripts: one for games (from IGDB) and one for demo users, reviews and comments.
-- Frontend: app shell with toolbar and mobile menu, login and register pages, home page (hero carousel, welcome strip and showcase lists), browse and search page, game detail page, review page with comments, and the user profile page.
+This part is for the team. The site is finished feature-wise, but nobody has tested it from start to end in the browser yet. The automated tests exist (pytest for the backend, Vitest for the frontend) and were passing the last time we ran them.
 
-Still left:
-- Get the IGDB credentials (Twitch Client ID and Client Secret) and run the game seed.
-- Test every page by hand in the browser, also at phone width (around 360 px).
-- Final visual polish: spacing, empty states, small mobile issues.
-- Cache IGDB searches in the backend so the same search does not use API requests every time.
-- Make `seed_demo.py` read `DEMO_USER_PASSWORD` from the `.env` file (right now it only reads a normal environment variable, see step 6).
-- Choose the final name of the site (it is a placeholder called "site" in `frontend/src/app/site.config.ts`).
-- Check everything again against the course requirements list.
-- Add the team names below and delete this section.
+What is done:
+- Database schema with Alembic migrations (users, games, genres, library entries, reviews, comments).
+- Backend API: register, login and logout with JWT, games and genres, IGDB import, library statuses, reviews, comments and the home page lists.
+- Seed scripts: one imports games from IGDB, the other creates demo users, reviews and comments.
+- Frontend: toolbar with mobile menu, login and register, home page (hero carousel, welcome strip and lists), browse and search, game page, review page with comments, and user profile.
+
+What is left (for the team):
+1. Test everything by hand. Follow the checklist below and write down what fails.
+2. Fix the bugs that come out of the testing.
+3. Visual polish: spacing, empty states and small problems on phone width (around 360 px).
+4. Make `seed_demo.py` read `DEMO_USER_PASSWORD` from the `.env` file. Right now it only reads a normal environment variable (see step 6 of the instructions).
+5. Choose the final name of the site. It is a placeholder called "site" in `frontend/src/app/site.config.ts`, and the title of this README also needs changing.
+6. Check the project once more against the course requirements list. That file and the design notes are not in the repository, ask whoever set the project up.
+7. Before delivering: add the team names, delete this section, and maybe add some screenshots.
+
+Every person needs their own `.env` with their own IGDB credentials (free Twitch developer account, see step 2). The database is local to each computer, so everyone has to run the seed commands once.
+
+Manual test checklist:
+- Home: the hero shows a game image, changes by itself, stops when the mouse is over it, and the arrows and dots work. The lists, recent reviews and genre tiles load.
+- Browse: search, genre filter, sorting and pages work, and the URL changes with them. Search for a game that is not in the database (for example an old or small one) and check that it appears after a moment.
+- Game page: description, genres, platforms and counts show up. Change the library status and check that the counts change. Write, edit and delete a review. Logged out, the buttons ask to log in.
+- Review page: add a comment, delete your own comment, and delete a comment as the review author. Edit and delete the review as its owner.
+- Profile: the tabs and counts are right, and the heart icon in the toolbar goes to your own wishlist.
+- Accounts: the register form shows errors (short password, bad username, repeated username or email). Login, logout, staying logged in after a reload, and /library redirecting to the login page when logged out.
+- Phone width: nothing overflows and the menu works.
+- A brand new account with no data: every empty state looks fine.
 
 ---
 
