@@ -48,7 +48,7 @@ class Game(Base):
     __tablename__ = "games"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    rawg_id: Mapped[int | None] = mapped_column(Integer, unique=True, nullable=True)
+    igdb_id: Mapped[int | None] = mapped_column(Integer, unique=True, nullable=True)
     slug: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     cover_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
@@ -61,7 +61,7 @@ class Game(Base):
         default=list,
         nullable=False,
     )
-    rawg_rating: Mapped[float | None] = mapped_column(Float, nullable=True)
+    igdb_rating: Mapped[float | None] = mapped_column(Float, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),

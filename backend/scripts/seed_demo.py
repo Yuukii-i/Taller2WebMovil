@@ -196,7 +196,7 @@ def seed_demo_data(
     # 2. Fetch games and partition into top and other
     all_games = (
         db.query(Game)
-        .order_by(Game.rawg_rating.desc().nullslast(), Game.id.asc())
+        .order_by(Game.igdb_rating.desc().nullslast(), Game.id.asc())
         .all()
     )
     top_slice_len = min(15, len(all_games))

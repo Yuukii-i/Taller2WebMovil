@@ -61,9 +61,9 @@ describe('authInterceptor', () => {
   it('does NOT attach Authorization header to non-API URLs even if token is present', () => {
     authStore.setSession('sample-jwt-token', mockUser);
 
-    http.get('https://rawg.io/api/games').subscribe();
+    http.get('https://api.igdb.com/v4/games').subscribe();
 
-    const req = httpMock.expectOne('https://rawg.io/api/games');
+    const req = httpMock.expectOne('https://api.igdb.com/v4/games');
     expect(req.request.headers.has('Authorization')).toBe(false);
     req.flush({});
   });

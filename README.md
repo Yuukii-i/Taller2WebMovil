@@ -2,15 +2,15 @@
 
 Done so far:
 - Database schema (users, games, genres, library entries, reviews, comments) with Alembic migrations.
-- Backend API: register/login/logout with JWT, games and genres, RAWG import, library statuses, reviews, comments and the home page lists. Backend tests pass.
-- Seed scripts: one for games (from RAWG) and one for demo users, reviews and comments.
+- Backend API: register/login/logout with JWT, games and genres, IGDB import, library statuses, reviews, comments and the home page lists. Backend tests pass.
+- Seed scripts: one for games (from IGDB) and one for demo users, reviews and comments.
 - Frontend: app shell with toolbar and mobile menu, login and register pages, home page (hero carousel, welcome strip and showcase lists), browse and search page, game detail page, review page with comments, and the user profile page.
 
 Still left:
-- Get the RAWG API key (the RAWG website was down when we tried) and run the game seed.
+- Get the IGDB credentials (Twitch Client ID and Client Secret) and run the game seed.
 - Test every page by hand in the browser, also at phone width (around 360 px).
 - Final visual polish: spacing, empty states, small mobile issues.
-- Cache RAWG searches in the backend so the same search does not use API requests every time.
+- Cache IGDB searches in the backend so the same search does not use API requests every time.
 - Make `seed_demo.py` read `DEMO_USER_PASSWORD` from the `.env` file (right now it only reads a normal environment variable, see step 6).
 - Choose the final name of the site (it is a placeholder called "site" in `frontend/src/app/site.config.ts`).
 - Check everything again against the course requirements list.
@@ -45,7 +45,7 @@ Backend
 - psycopg 3 (PostgreSQL driver)
 - Pydantic and pydantic-settings (validation and configuration)
 - PyJWT (tokens) and pwdlib with argon2 (password hashing)
-- httpx (requests to RAWG)
+- httpx (requests to IGDB)
 - Uvicorn (server) and pytest (tests)
 
 Frontend
@@ -60,7 +60,7 @@ Database
 - PostgreSQL 16, run with Docker Compose
 
 External data
-- RAWG API (https://rawg.io/apidocs) is used as the game database. Games are imported from RAWG into our own PostgreSQL database, so the site reads them from there. Game data and images come from RAWG.
+- IGDB API (https://api-docs.igdb.com) is used as the game database. Games are imported from IGDB into our own PostgreSQL database, so the site reads them from there. Game data and images come from IGDB.
 
 ## Project structure
 
@@ -81,7 +81,7 @@ docker-compose.yml
 - Docker Desktop (for the database)
 - Python 3.12 or newer (we used 3.14)
 - Node.js 22 or newer and npm (we used Node 24)
-- A free RAWG API key (https://rawg.io/apidocs)
+- Twitch developer credentials (Client ID and Client Secret) for IGDB (https://api-docs.igdb.com)
 
 ## How to run it
 
@@ -111,7 +111,7 @@ Then open `.env` and set the values:
   ```
   python -c "import secrets; print(secrets.token_urlsafe(48))"
   ```
-- `RAWG_API_KEY`: your key from https://rawg.io/apidocs.
+- `IGDB_CLIENT_ID` and `IGDB_CLIENT_SECRET`: your Twitch developer credentials for IGDB (https://dev.twitch.tv/console/apps).
 - The other values can stay as they are.
 
 The `.env` file is ignored by git, never upload it.
@@ -157,7 +157,7 @@ cd backend
 python -m scripts.seed_games
 ```
 
-This downloads about 300 popular games from RAWG and saves them in the database. It takes about a minute and can be run again without creating duplicates. It needs the `RAWG_API_KEY` from step 2.
+This downloads about 300 popular games from IGDB and saves them in the database. It takes about a minute and can be run again without creating duplicates. It needs `IGDB_CLIENT_ID` and `IGDB_CLIENT_SECRET` from step 2.
 
 ### 6. Optional: demo data
 
@@ -217,7 +217,7 @@ All routes start with `/api`. Routes marked with (login) need the `Authorization
 ## Notes
 
 - The token is saved in the browser's localStorage. It is fine for a university project, but a production site should use something safer.
-- If RAWG is not available, the site keeps working with the games already saved in the database. Only searching for games that were never imported needs RAWG.
+- If IGDB is not available, the site keeps working with the games already saved in the database. Only searching for games that were never imported needs IGDB.
 - Do not commit the `.env` file. Only `.env.example` is in the repository, with placeholder values.
 
 ## Common problems
@@ -229,4 +229,4 @@ All routes start with `/api`. Routes marked with (login) need the `Authorization
 
 ## Credits
 
-Game data and images: RAWG (https://rawg.io).
+Game data and images: IGDB (https://www.igdb.com).

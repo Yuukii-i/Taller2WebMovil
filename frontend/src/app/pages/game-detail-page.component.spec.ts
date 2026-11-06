@@ -41,7 +41,7 @@ describe('GameDetailPageComponent - CTA Mapping & State', () => {
     release_date: '1996-06-23',
     platforms: ['Nintendo 64'],
     genres: [{ name: 'Platformer', slug: 'platformer' }],
-    rawg_rating: 4.8,
+    igdb_rating: 88.0,
     avg_score: 9.6,
     review_count: 50,
     status_counts: {

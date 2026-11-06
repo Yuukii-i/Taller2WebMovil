@@ -29,23 +29,23 @@ class GameCard(BaseModel):
     id: int
     title: str
     slug: str
-    cover_url: str | None
-    release_date: date | None
-    platforms: list[str]
-    genres: list[GenreSimple]
-    avg_score: float | None
-    review_count: int
+    cover_url: str | None = None
+    background_url: str | None = None
+    release_date: date | None = None
+    platforms: list[str] = []
+    genres: list[GenreSimple] = []
+    avg_score: float | None = None
+    review_count: int = 0
 
     model_config = ConfigDict(from_attributes=True)
 
 
 class GameDetail(GameCard):
-    description: str | None
-    background_url: str | None
-    rawg_rating: float | None
+    description: str | None = None
+    igdb_rating: float | None = None
     status_counts: StatusCounts
-    my_status: str | None
-    my_review_id: int | None
+    my_status: str | None = None
+    my_review_id: int | None = None
 
     model_config = ConfigDict(from_attributes=True)
 

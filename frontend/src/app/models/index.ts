@@ -61,6 +61,7 @@ export interface GameCard {
   title: string;
   slug: string;
   cover_url: string | null;
+  background_url?: string | null;
   release_date: string | null;
   platforms: string[];
   genres: GenreSimple[];
@@ -78,7 +79,7 @@ export interface StatusCounts {
 export interface GameDetail extends GameCard {
   description: string | null;
   background_url: string | null;
-  rawg_rating: number | null;
+  igdb_rating: number | null;
   status_counts: StatusCounts;
   my_status: string | null;
   my_review_id: number | null;

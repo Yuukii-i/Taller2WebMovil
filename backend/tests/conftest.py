@@ -45,11 +45,13 @@ admin_engine.dispose()
 test_engine = create_engine(TEST_DB_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
-# Create all tables on test DB once per session
+# Recreate all tables on test DB to match current schema
+Base.metadata.drop_all(bind=test_engine)
 Base.metadata.create_all(bind=test_engine)
 
-# Ensure tests run with RAWG key empty by default so no real network is used
-settings.rawg_api_key = ""
+# Ensure tests run with IGDB credentials empty by default so no real network is used
+settings.igdb_client_id = ""
+settings.igdb_client_secret = ""
 
 
 @pytest.fixture(autouse=True)
@@ -99,4 +101,3 @@ def auth_user_factory(db_session: Session):
         return user, token, headers
 
     return _create
-

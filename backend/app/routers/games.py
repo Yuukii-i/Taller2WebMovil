@@ -12,8 +12,8 @@ from app.models.review import Review
 from app.models.user import User
 from app.schemas.game import GameCard, GameDetail, GenreSimple, PageGameCard, StatusCounts
 from app.services.game_cards import get_game_review_stats_subquery
-from app.services.game_import import ensure_description, upsert_games
-from app.services.rawg import RawgError, search_games
+from app.services.game_import import upsert_games
+from app.services.igdb import IgdbError, search_games
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ def list_games(
 ) -> PageGameCard:
     cleaned_q = q.strip() if q else ""
 
-    # Check local count for RAWG fill condition
+    # Check local count for IGDB fill condition
     if cleaned_q and page == 1:
         escaped_q = _escape_like(cleaned_q)
         local_q_count = db.scalar(
@@ -44,10 +44,10 @@ def list_games(
         ) or 0
         if local_q_count < 5:
             try:
-                rawg_results = search_games(cleaned_q)
-                upsert_games(db, rawg_results)
-            except RawgError as e:
-                logger.warning("RAWG search failed for q=%s: %s", cleaned_q, e)
+                igdb_results = search_games(cleaned_q)
+                upsert_games(db, igdb_results)
+            except IgdbError as e:
+                logger.warning("IGDB search failed for q=%s: %s", cleaned_q, e)
 
     # Base query filters
     conditions = []
@@ -83,7 +83,7 @@ def list_games(
     elif sort == "reviews":
         order_clauses = [review_count_col.desc(), Game.id.asc()]
     else:  # rating (default)
-        order_clauses = [nullslast(Game.rawg_rating.desc()), Game.id.asc()]
+        order_clauses = [nullslast(Game.igdb_rating.desc()), Game.id.asc()]
 
     query = (
         select(Game, avg_score_col, review_count_col)
@@ -103,6 +103,7 @@ def list_games(
             title=game.title,
             slug=game.slug,
             cover_url=game.cover_url,
+            background_url=game.background_url,
             release_date=game.release_date,
             platforms=game.platforms or [],
             genres=[GenreSimple(name=g.name, slug=g.slug) for g in game.genres],
@@ -134,9 +135,6 @@ def get_game_detail(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Game not found",
         )
-
-    # Lazy fetch description if missing
-    ensure_description(db, game)
 
     # Review stats
     stats_row = db.execute(
@@ -191,7 +189,7 @@ def get_game_detail(
         description=game.description,
         release_date=game.release_date,
         platforms=game.platforms or [],
-        rawg_rating=game.rawg_rating,
+        igdb_rating=game.igdb_rating,
         genres=[GenreSimple(name=g.name, slug=g.slug) for g in game.genres],
         avg_score=avg_score,
         review_count=review_count,

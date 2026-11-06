@@ -12,10 +12,10 @@ def fixture_games(db_session: Session) -> list[Game]:
     games = []
     for i in range(1, 10):
         g = Game(
-            rawg_id=1000 + i,
+            igdb_id=1000 + i,
             title=f"Game {i}",
             slug=f"game-{i}",
-            rawg_rating=4.5 - (i * 0.1),
+            igdb_rating=4.5 - (i * 0.1),
         )
         db_session.add(g)
         games.append(g)

@@ -59,9 +59,9 @@ import { LibraryService } from '../../services/library.service';
             >
               <!-- Background Art -->
               <div class="slide-art-container">
-                @if (slide.game.cover_url && !imageErrors()[slide.game.id]) {
+                @if ((slide.game.background_url || slide.game.cover_url) && !imageErrors()[slide.game.id]) {
                   <img
-                    [src]="slide.game.cover_url"
+                    [src]="slide.game.background_url || slide.game.cover_url"
                     [alt]="slide.game.title"
                     class="slide-img"
                     [attr.fetchpriority]="idx === 0 ? 'high' : null"
@@ -110,7 +110,7 @@ import { LibraryService } from '../../services/library.service';
         </div>
 
         <!-- Preload next slide image -->
-        @if (nextSlideItem()?.game?.cover_url; as nextUrl) {
+        @if ((nextSlideItem()?.game?.background_url || nextSlideItem()?.game?.cover_url); as nextUrl) {
           <img
             [src]="nextUrl"
             class="preload-img"

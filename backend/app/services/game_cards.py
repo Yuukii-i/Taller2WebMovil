@@ -43,6 +43,7 @@ def build_game_cards(db: Session, game_ids: Sequence[int]) -> dict[int, GameCard
             title=game.title,
             slug=game.slug,
             cover_url=game.cover_url,
+            background_url=game.background_url,
             release_date=game.release_date,
             platforms=game.platforms or [],
             genres=[GenreSimple(name=g.name, slug=g.slug) for g in game.genres],
