@@ -13,6 +13,7 @@ if str(backend_dir) not in sys.path:
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.db import SessionLocal
 from app.models.comment import Comment
 from app.models.game import Game
@@ -126,9 +127,9 @@ def seed_demo_data(
         raise RuntimeError("Cannot run demo seed in production environment.")
 
     if not password:
-        password = os.environ.get("DEMO_USER_PASSWORD")
+        password = settings.demo_user_password or os.environ.get("DEMO_USER_PASSWORD")
     if not password:
-        raise ValueError("DEMO_USER_PASSWORD environment variable is not set.")
+        raise ValueError("DEMO_USER_PASSWORD must be set in .env or as an environment variable.")
 
     game_count = db.query(func.count(Game.id)).scalar() or 0
     if game_count < min_games:
@@ -350,9 +351,9 @@ def main() -> None:
         print("Error: Cannot run demo seed in production environment.", file=sys.stderr)
         sys.exit(1)
 
-    password = os.environ.get("DEMO_USER_PASSWORD")
+    password = settings.demo_user_password or os.environ.get("DEMO_USER_PASSWORD")
     if not password:
-        print("Error: DEMO_USER_PASSWORD environment variable is not set.", file=sys.stderr)
+        print("Error: DEMO_USER_PASSWORD must be set in .env or as an environment variable.", file=sys.stderr)
         sys.exit(1)
 
     with SessionLocal() as db:

@@ -12,8 +12,8 @@ What is left (for the team):
 1. Test everything by hand. Follow the checklist below and write down what fails.
 2. Fix the bugs that come out of the testing.
 3. Visual polish: spacing, empty states and small problems on phone width (around 360 px).
-4. Make `seed_demo.py` read `DEMO_USER_PASSWORD` from the `.env` file. Right now it only reads a normal environment variable (see step 6 of the instructions).
-5. Choose the final name of the site. It is a placeholder called "site" in `frontend/src/app/site.config.ts`, and the title of this README also needs changing.
+4. [COMPLETED] `seed_demo.py` reads `DEMO_USER_PASSWORD` from `.env`.
+5. [COMPLETED] Site name set to "Gamelock" in `site.config.ts`, `index.html` and README.
 6. Check the project once more against the course requirements list. That file and the design notes are not in the repository, ask whoever set the project up.
 7. Before delivering: add the team names, delete this section, and maybe add some screenshots.
 
@@ -31,7 +31,7 @@ Manual test checklist:
 
 ---
 
-# Game Tracking Website
+# Gamelock - Game Tracking Website
 
 Web application where users keep track of the games they play. Each user can mark a game as wishlist, playing, completed or abandoned, write a review with a score from 1 to 10, and comment on the reviews of other users. The home page shows lists such as the best rated games, the most wishlisted ones and the most abandoned ones.
 
@@ -174,10 +174,9 @@ This downloads about 300 popular games from IGDB and saves them in the database.
 
 ### 6. Optional: demo data
 
-To see the site with users, reviews and comments, create the demo data. The password for the demo accounts is read from an environment variable of the terminal (not from `.env`):
+To see the site with users, reviews and comments, create the demo data. The password for the demo accounts is read from `DEMO_USER_PASSWORD` in your `.env` file (or can also be set via an environment variable):
 
 ```
-$env:DEMO_USER_PASSWORD = "choose-a-password"
 python -m scripts.seed_demo
 ```
 

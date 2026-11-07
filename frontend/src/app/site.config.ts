@@ -1,1 +1,1 @@
-export const SITE_NAME = 'site';
+export const SITE_NAME = 'Gamelock';

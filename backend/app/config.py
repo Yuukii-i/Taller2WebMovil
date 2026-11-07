@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:4200"
     igdb_client_id: str = ""
     igdb_client_secret: str = ""
+    demo_user_password: str = ""
 
     @field_validator("jwt_secret")
     @classmethod
