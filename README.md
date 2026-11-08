@@ -209,3 +209,9 @@ All routes start with `/api`. Routes marked with (login) need the `Authorization
 ## Credits
 
 Game data and images: IGDB (https://www.igdb.com).
+
+## Capturas de pantalla
+
+(assets/image.png)
+
+(assets/image1.png)
