@@ -1,41 +1,8 @@
-# TEMPORARY: project status (delete this section before the final delivery)
-
-This part is for the team. The site is finished feature-wise, but nobody has tested it from start to end in the browser yet. The automated tests exist (pytest for the backend, Vitest for the frontend) and were passing the last time we ran them.
-
-What is done:
-- Database schema with Alembic migrations (users, games, genres, library entries, reviews, comments).
-- Backend API: register, login and logout with JWT, games and genres, IGDB import, library statuses, reviews, comments and the home page lists.
-- Seed scripts: one imports games from IGDB, the other creates demo users, reviews and comments.
-- Frontend: toolbar with mobile menu, login and register, home page (hero carousel, welcome strip and lists), browse and search, game page, review page with comments, and user profile.
-
-What is left (for the team):
-1. [COMPLETED] Test everything by hand. Follow the checklist below and write down what fails.
-2. [COMPLETED]Fix the bugs that come out of the testing.
-3. Visual polish: spacing, empty states and small problems on phone width (around 360 px).
-4. [COMPLETED] `seed_demo.py` reads `DEMO_USER_PASSWORD` from `.env`.
-5. [COMPLETED] Site name set to "Gamelock" in `site.config.ts`, `index.html` and README.
-6. Check the project once more against the course requirements list. That file and the design notes are not in the repository, ask whoever set the project up.
-7. Before delivering: add the team names, delete this section, and maybe add some screenshots.
-
-Every person needs their own `.env` with their own IGDB credentials (free Twitch developer account, see step 2). The database is local to each computer, so everyone has to run the seed commands once.
-
-Manual test checklist:
-- Home: the hero shows a game image, changes by itself, stops when the mouse is over it, and the arrows and dots work. The lists, recent reviews and genre tiles load. [CORRECT]
-- Browse: search, genre filter, sorting and pages work, and the URL changes with them. Search for a game that is not in the database (for example an old or small one) and check that it appears after a moment. [CORRECT]
-- Game page: description, genres, platforms and counts show up. Change the library status and check that the counts change. Write, edit and delete a review. Logged out, the buttons ask to log in. [CORRECT]
-- Review page: add a comment, delete your own comment, and delete a comment as the review author. Edit and delete the review as its owner. [CORRECT]
-- Profile: the tabs and counts are right, and the heart icon in the toolbar goes to your own wishlist. [CORRECT]
-- Accounts: the register form shows errors (short password, bad username, repeated username or email). Login, logout, staying logged in after a reload, and /library redirecting to the login page when logged out. [CORRECT]
-- Phone width: nothing overflows and the menu works.[CORRECT]
-- A brand new account with no data: every empty state looks fine. [CORRECT]
-
----
-
 # Gamelock - Game Tracking Website
 
 Web application where users keep track of the games they play. Each user can mark a game as wishlist, playing, completed or abandoned, write a review with a score from 1 to 10, and comment on the reviews of other users. The home page shows lists such as the best rated games, the most wishlisted ones and the most abandoned ones.
 
-Team: (add names here)
+Team: Rodrigo Cortes - Enzo Dias - Ulices Ramires - Dan Gomez
 
 ## Features
 
