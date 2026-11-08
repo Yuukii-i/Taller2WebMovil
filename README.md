@@ -1,114 +1,114 @@
-# Gamelock - Game Tracking Website
+# Gamelock - Sitio web de seguimiento de videojuegos
 
-Web application where users keep track of the games they play. Each user can mark a game as wishlist, playing, completed or abandoned, write a review with a score from 1 to 10, and comment on the reviews of other users. The home page shows lists such as the best rated games, the most wishlisted ones and the most abandoned ones.
+Aplicación web donde los usuarios llevan un registro de los juegos que juegan. Cada usuario puede marcar un juego como en lista de deseos, jugando, completado o abandonado, escribir una reseña con una puntuación del 1 al 10 y comentar en las reseñas de otros usuarios. La página de inicio muestra listas como los juegos mejor valorados, los más deseados y los más abandonados.
 
-Team: Rodrigo Cortes - Enzo Dias - Ulices Ramires - Dan Gomez
+Equipo: Rodrigo Cortes - Enzo Dias - Ulices Ramires - Dan Gomez
 
-## Features
+## Características
 
-- Register, login and logout (JWT authentication, passwords stored hashed).
-- Home page with a hero carousel and lists: top rated, most wishlisted, most played right now, most completed, most abandoned and recent reviews.
-- Browse and search games, filter by genre and sort by rating, title, release date or number of reviews.
-- Game page with description, genres, platforms, average score and how many users have it in each status.
-- Library: add a game to your wishlist, mark it as playing, completed or abandoned.
-- Reviews: one review per user and game, with a score from 1 to 10 and an optional text. Can be edited and deleted.
-- Comments on reviews. The comment author or the review author can delete a comment.
-- User profile with the library split by status and the list of reviews.
-- Works on desktop and mobile.
+- Registro, inicio y cierre de sesión (Autenticación JWT, contraseñas almacenadas con hash).
+- Página de inicio con un carrusel principal y listas: mejor valorados, más deseados, más jugados ahora mismo, más completados, más abandonados y reseñas recientes.
+- Explorar y buscar juegos, filtrar por género y ordenar por valoración, título, fecha de lanzamiento o número de reseñas.
+- Página del juego con descripción, géneros, plataformas, puntuación promedio y cuántos usuarios lo tienen en cada estado.
+- Biblioteca: añade un juego a tu lista de deseos, márcalo como jugando, completado o abandonado.
+- Reseñas: una reseña por usuario y juego, con una puntuación del 1 al 10 y un texto opcional. Se pueden editar y eliminar.
+- Comentarios en las reseñas. El autor del comentario o el autor de la reseña pueden eliminar un comentario.
+- Perfil de usuario con la biblioteca dividida por estado y la lista de reseñas.
+- Funciona en escritorio y móvil.
 
-## Technologies
+## Tecnologías
 
 Backend
 - Python
 - FastAPI (REST API, JSON)
-- SQLAlchemy 2 (ORM) and Alembic (database migrations)
+- SQLAlchemy 2 (ORM) and Alembic (migraciones de base de datos)
 - psycopg 3 (PostgreSQL driver)
-- Pydantic and pydantic-settings (validation and configuration)
-- PyJWT (tokens) and pwdlib with argon2 (password hashing)
-- httpx (requests to IGDB)
-- Uvicorn (server) and pytest (tests)
+- Pydantic and pydantic-settings (validación y configuración)
+- PyJWT (tokens) and pwdlib with argon2 (hash de contraseñas)
+- httpx (peticiones a IGDB)
+- Uvicorn (server) and pytest (pruebas)
 
 Frontend
 - Angular (standalone components, Router, Signals, httpResource, Reactive Forms)
-- Angular Material and Angular CDK
-- TypeScript, HTML and SCSS (CSS)
+- Angular Material y Angular CDK
+- TypeScript, HTML y SCSS (CSS)
 - RxJS
-- Vitest (unit tests)
-- Fonts: Inter and Playfair Display (Google Fonts)
+- Vitest (pruebas unitarias)
+- Fuentes: Inter y Playfair Display (Google Fonts)
 
 Database
-- PostgreSQL 16, run with Docker Compose
+- PostgreSQL 16, ejecutado con Docker Compose
 
 External data
-- IGDB API (https://api-docs.igdb.com) is used as the game database. Games are imported from IGDB into our own PostgreSQL database, so the site reads them from there. Game data and images come from IGDB.
+- Se utiliza la API de IGDB (https://api-docs.igdb.com) como base de datos de juegos. Los juegos se importan desde IGDB a nuestra propia base de datos PostgreSQL, por lo que el sitio los lee desde allí. Los datos de los juegos y las imágenes provienen de IGDB.
 
-## Project structure
+## Estructura del proyecto
 
 ```
 backend/
-  app/            FastAPI app (routers, models, schemas, services)
-  alembic/        database migrations
-  scripts/        seed_games.py and seed_demo.py
-  tests/          pytest tests
+  app/            Aplicación FastAPI (routers, models, schemas, services)
+  alembic/        Migraciones de la base de datos
+  scripts/        seed_games.py y seed_demo.py
+  tests/          pruebas de pytest
 frontend/
-  src/app/        Angular app (pages, components, services, guards, interceptors)
+  src/app/        Aplicación Angular (pages, components, services, guards, interceptors)
 docker-compose.yml
 .env.example
 ```
 
-## Requirements
+## Requisitos
 
-- Docker Desktop (for the database)
-- Python 3.12 or newer (we used 3.14)
-- Node.js 22 or newer and npm (we used Node 24)
-- Twitch developer credentials (Client ID and Client Secret) for IGDB (https://api-docs.igdb.com)
+- Docker Desktop (para la base de datos)
+- Python 3.12 or superior (we used 3.14)
+- Node.js 22 or superior and npm (usamos Node 24)
+- Credenciales de desarrollador de Twitch (Client ID and Client Secret) para IGDB (https://api-docs.igdb.com)
 
-## How to run it
+## Cómo ejecutarlo
 
-The commands are for PowerShell on Windows. On macOS or Linux, activate the virtual environment with `source .venv/bin/activate` instead.
+Los comandos son para PowerShell en Windows. En macOS o Linux, activa el entorno virtual con `source .venv/bin/activate` en su lugar.
 
-You need three things running at the same time: the database, the backend and the frontend. Use one terminal for each.
+Necesitas tres cosas ejecutándose al mismo tiempo: la base de datos, el backend y el frontend. Usa una terminal para cada uno.
 
-### 1. Clone the repository
+### 1. Clonar el repositorio
 
 ```
 git clone https://github.com/Yuukii-i/Taller2WebMovil.git
 cd Taller2WebMovil
 ```
 
-### 2. Create the .env file
+### 2. Crear el archivo .env
 
-Copy the example file in the root folder of the project:
+Copia el archivo de ejemplo en la carpeta raíz del proyecto:
 
 ```
 copy .env.example .env
 ```
 
-Then open `.env` and set the values:
+Luego abre `.env` y establece los valores:
 
-- `POSTGRES_PASSWORD`: any password you want for the database. Use the same password inside `DATABASE_URL`.
-- `JWT_SECRET`: a long random text, at least 32 characters. You can generate one with:
+- `POSTGRES_PASSWORD`: cualquier contraseña que desees para la base de datos. Usa la misma contraseña dentro de `DATABASE_URL`.
+- `JWT_SECRET`: un texto largo y aleatorio, de al menos 32 caracteres. Puedes generar uno con:
   ```
   python -c "import secrets; print(secrets.token_urlsafe(48))"
   ```
-- `IGDB_CLIENT_ID` and `IGDB_CLIENT_SECRET`: your Twitch developer credentials for IGDB (https://dev.twitch.tv/console/apps).
-- The other values can stay as they are.
+- `IGDB_CLIENT_ID` e `IGDB_CLIENT_SECRET`: tus credenciales de desarrollador de Twitch para IGDB (https://dev.twitch.tv/console/apps).
+- Los demás valores pueden quedarse como están.
 
-The `.env` file is ignored by git, never upload it.
+El archivo `.env` es ignorado por git, nunca lo subas.
 
-### 3. Start the database
+### 3. Iniciar la base de datos
 
-Open Docker Desktop and wait until it is running, then:
+Abre Docker Desktop y espera hasta que se esté ejecutando, luego:
 
 ```
 docker compose up -d db
 ```
 
-Check that the container `web_movil_db` is up with `docker ps`.
+Comprueba que el contenedor `web_movil_db` esté activo con `docker ps`.
 
-### 4. Set up and start the backend
+### 4. Configurar e iniciar el backend  
 
-In a new terminal:
+En una nueva terminal:
 
 ```
 cd backend
@@ -119,17 +119,17 @@ alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-The API runs at http://localhost:8000 and the interactive documentation is at http://localhost:8000/docs.
+La API se ejecuta en http://localhost:8000 y la documentación interactiva está en http://localhost:8000/docs.
 
-If PowerShell does not let you activate the environment, run this once and try again:
+Si PowerShell no te permite activar el entorno, ejecuta esto una vez e inténtalo de nuevo:
 
 ```
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
-### 5. Import the games
+### 5. Importar los juegos
 
-In another terminal, with the virtual environment active (the prompt starts with `(.venv)`):
+En otra terminal, con el entorno virtual activo (el prompt comienza con `(.venv)`):
 
 ```
 cd backend
@@ -137,21 +137,21 @@ cd backend
 python -m scripts.seed_games
 ```
 
-This downloads about 300 popular games from IGDB and saves them in the database. It takes about a minute and can be run again without creating duplicates. It needs `IGDB_CLIENT_ID` and `IGDB_CLIENT_SECRET` from step 2.
+Esto descarga alrededor de 300 juegos populares de IGDB y los guarda en la base de datos. Tarda aproximadamente un minuto y se puede volver a ejecutar sin crear duplicados. Necesita `IGDB_CLIENT_ID` e `IGDB_CLIENT_SECRET` del paso 2.
 
-### 6. Optional: demo data
+### 6. Opcional: datos de demostración (demo)
 
-To see the site with users, reviews and comments, create the demo data. The password for the demo accounts is read from `DEMO_USER_PASSWORD` in your `.env` file (or can also be set via an environment variable):
+Para ver el sitio con usuarios, reseñas y comentarios, crea los datos de demostración. La contraseña para las cuentas de demostración se lee de `DEMO_USER_PASSWORD` en tu archivo `.env` (o también se puede establecer a través de una variable de entorno):
 
 ```
 python -m scripts.seed_demo
 ```
 
-This creates 15 demo users with library entries, reviews and comments. You can log in with any of them, for example the username `pixelpilot` and the password you chose. To delete and create the demo data again use `python -m scripts.seed_demo --reset`. Only the demo users (emails ending in `@demo.local`) are affected.
+Esto crea 15 usuarios de demostración con entradas de biblioteca, reseñas y comentarios. Puedes iniciar sesión con cualquiera de ellos, por ejemplo, el nombre de usuario `pixelpilot` y la contraseña que elegiste. Para eliminar y crear los datos de demostración nuevamente usa `python -m scripts.seed_demo --reset`. Solo los usuarios de demostración (correos que terminan en `@demo.local`) se ven afectados.
 
-### 7. Start the frontend
+### 7. Iniciar el frontend
 
-In a third terminal:
+En una tercera terminal:
 
 ```
 cd frontend
@@ -159,15 +159,15 @@ npm install
 npm start
 ```
 
-Open http://localhost:4200 in the browser. The first time it can take a little while to compile. The terminal stays busy while the server is running, that is normal.
+Abre http://localhost:4200 en el navegador. La primera vez puede tardar un poco en compilar. La terminal se mantiene ocupada mientras el servidor se está ejecutando, eso es normal.
 
-### Stopping everything
+### Detener todo
 
-Press Ctrl+C in the backend and frontend terminals. To stop the database run `docker compose stop`. The data is kept in a Docker volume, so it is still there the next time.
+Presiona Ctrl+C en las terminales del backend y frontend. Para detener la base de datos ejecuta `docker compose stop`. Los datos se mantienen en un volumen de Docker, por lo que seguirán ahí la próxima vez.
 
-## Tests
+## Pruebas
 
-Backend (the database container must be running, the tests use a separate database called `<POSTGRES_DB>_test` that is created automatically):
+Backend (el contenedor de la base de datos debe estar ejecutándose, las pruebas usan una base de datos separada llamada`<POSTGRES_DB>_test` que se crea automáticamente):
 
 ```
 cd backend
@@ -182,33 +182,33 @@ cd frontend
 npm test
 ```
 
-## API overview
+## Resumen de la API
 
-All routes start with `/api`. Routes marked with (login) need the `Authorization: Bearer <token>` header. The full list is in the Swagger page at `/docs`.
+Todas las rutas comienzan con `/api`. Las rutas marcadas con (login) necesitan el encabezado `Authorization: Bearer <token>` La lista completa está en la página de Swagger en `/docs`.
 
-- Auth: `POST /auth/register`, `POST /auth/login`, `POST /auth/logout` (login), `GET /users/me` (login)
-- Games: `GET /games`, `GET /games/{id}`, `GET /genres`
-- Library: `PUT /library/{game_id}` (login), `DELETE /library/{game_id}` (login), `GET /users/{username}/library`
-- Reviews: `GET /games/{id}/reviews`, `POST /games/{id}/reviews` (login), `GET /reviews/{id}`, `PUT /reviews/{id}` (login), `DELETE /reviews/{id}` (login), `GET /users/{username}/reviews`
-- Comments: `GET /reviews/{id}/comments`, `POST /reviews/{id}/comments` (login), `DELETE /comments/{id}` (login)
-- Home: `GET /home`
+- Autenticación: `POST /auth/register`, `POST /auth/login`, `POST /auth/logout` (login), `GET /users/me` (login)
+- Juegos: `GET /games`, `GET /games/{id}`, `GET /genres`
+- Biblioteca: `PUT /library/{game_id}` (login), `DELETE /library/{game_id}` (login), `GET /users/{username}/library`
+- Reseñas: `GET /games/{id}/reviews`, `POST /games/{id}/reviews` (login), `GET /reviews/{id}`, `PUT /reviews/{id}` (login), `DELETE /reviews/{id}` (login), `GET /users/{username}/reviews`
+- Comentarios: `GET /reviews/{id}/comments`, `POST /reviews/{id}/comments` (login), `DELETE /comments/{id}` (login)
+- Inicio: `GET /home`
 
-## Notes
+## Notas
 
-- The token is saved in the browser's localStorage. It is fine for a university project, but a production site should use something safer.
-- If IGDB is not available, the site keeps working with the games already saved in the database. Only searching for games that were never imported needs IGDB.
-- Do not commit the `.env` file. Only `.env.example` is in the repository, with placeholder values.
+- El token se guarda en el localStorage del navegador. Está bien para un proyecto universitario, pero un sitio en producción debería usar algo más seguro.
+- Si IGDB no está disponible, el sitio sigue funcionando con los juegos ya guardados en la base de datos. Solo la búsqueda de juegos que nunca fueron importados necesita IGDB.
+- No hagas commit del archivo `.env` Solo `.env.example` está en el repositorio, con valores de marcador de posición.
 
-## Common problems
+## Problemas comunes
 
-- The backend cannot connect to the database: Docker is not running, or the password in `DATABASE_URL` is different from `POSTGRES_PASSWORD`. The database password is set the first time the container is created. If you change it later, run `docker compose down -v` (this deletes the database data) and start again from step 3.
-- `No module named scripts`: the command was run outside the `backend` folder or without the virtual environment active.
-- The page opens but shows no games: the backend is not running, or the games were not imported (step 5).
-- You were logged out after changing `JWT_SECRET`: the old tokens are not valid anymore, just log in again.
+- El backend no puede conectarse a la base de datos: Docker no se está ejecutando, o la contraseña en `DATABASE_URL` es diferente de `POSTGRES_PASSWORD`. La contraseña de la base de datos se establece la primera vez que se crea el contenedor. Si la cambias más tarde, ejecuta `docker compose down -v` (esto elimina los datos de la base de datos) y comienza de nuevo desde el paso 3.
+- `No module named scripts`: el comando se ejecutó fuera de la carpeta `backend` o sin el entorno virtual activo.
+- La página se abre pero no muestra juegos: el backend no se está ejecutando, o los juegos no fueron importados (paso 5).
+- Se cerró tu sesión después de cambiar `JWT_SECRET`: los tokens antiguos ya no son válidos, simplemente inicia sesión de nuevo.
 
-## Credits
+## Créditos
 
-Game data and images: IGDB (https://www.igdb.com).
+Datos de juegos e imágenes: IGDB (https://www.igdb.com).
 
 ## Capturas de pantalla
 
