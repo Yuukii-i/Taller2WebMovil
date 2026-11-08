@@ -10,7 +10,7 @@ What is done:
 
 What is left (for the team):
 1. [COMPLETED] Test everything by hand. Follow the checklist below and write down what fails.
-2. Fix the bugs that come out of the testing.
+2. [COMPLETED]Fix the bugs that come out of the testing.
 3. Visual polish: spacing, empty states and small problems on phone width (around 360 px).
 4. [COMPLETED] `seed_demo.py` reads `DEMO_USER_PASSWORD` from `.env`.
 5. [COMPLETED] Site name set to "Gamelock" in `site.config.ts`, `index.html` and README.
@@ -21,12 +21,12 @@ Every person needs their own `.env` with their own IGDB credentials (free Twitch
 
 Manual test checklist:
 - Home: the hero shows a game image, changes by itself, stops when the mouse is over it, and the arrows and dots work. The lists, recent reviews and genre tiles load. [CORRECT]
-- Browse: search, genre filter, sorting and pages work, and the URL changes with them. Search for a game that is not in the database (for example an old or small one) and check that it appears after a moment. [PARTIALLY CORRECT]
+- Browse: search, genre filter, sorting and pages work, and the URL changes with them. Search for a game that is not in the database (for example an old or small one) and check that it appears after a moment. [CORRECT]
 - Game page: description, genres, platforms and counts show up. Change the library status and check that the counts change. Write, edit and delete a review. Logged out, the buttons ask to log in. [CORRECT]
 - Review page: add a comment, delete your own comment, and delete a comment as the review author. Edit and delete the review as its owner. [CORRECT]
 - Profile: the tabs and counts are right, and the heart icon in the toolbar goes to your own wishlist. [CORRECT]
 - Accounts: the register form shows errors (short password, bad username, repeated username or email). Login, logout, staying logged in after a reload, and /library redirecting to the login page when logged out. [CORRECT]
-- Phone width: nothing overflows and the menu works.
+- Phone width: nothing overflows and the menu works.[CORRECT]
 - A brand new account with no data: every empty state looks fine. [CORRECT]
 
 ---
