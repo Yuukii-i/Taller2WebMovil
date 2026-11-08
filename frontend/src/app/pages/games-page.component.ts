@@ -49,7 +49,6 @@ import { StateViewComponent } from '../components/state-view.component';
         }
       </header>
 
-      <!-- Search and Controls Bar -->
       <div class="controls-bar">
         <div class="search-field">
           <mat-icon class="search-icon">search</mat-icon>
@@ -87,7 +86,7 @@ import { StateViewComponent } from '../components/state-view.component';
         </div>
       </div>
 
-      <!-- Genre Chips Filter -->
+
       <div class="genre-filter-row">
         <mat-chip-listbox
           [value]="genre()"
@@ -123,11 +122,11 @@ import { StateViewComponent } from '../components/state-view.component';
               }
             </div>
 
-            @if (p.total > pageSize) {
+            @if (p.total > 10) {
               <app-pager
                 [total]="p.total"
                 [page]="page()"
-                [pageSize]="pageSize"
+                [pageSize]="pageSize()"
                 (pageChange)="onPageChange($event)"
               ></app-pager>
             }
@@ -272,11 +271,16 @@ export class GamesPageComponent {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly pageSize = 20;
-
   private readonly queryParams = toSignal(this.route.queryParams, {
     initialValue: {} as Params,
   });
+
+  private readonly permitidoPageSizes = [10, 20, 50 ];
+
+  readonly pageSize = computed(() => {
+    const s = Number(this.queryParams()['page_size']);
+    return this.permitidoPageSizes.includes(s) ? s: 20;
+  })
 
   readonly q = computed(() => (this.queryParams()['q'] || '').trim());
   readonly genre = computed(() => (this.queryParams()['genre'] || '').trim());
@@ -297,7 +301,7 @@ export class GamesPageComponent {
     genre: this.genre(),
     sort: this.sort(),
     page: this.page(),
-    page_size: this.pageSize,
+    page_size: this.pageSize(),
   }));
 
   readonly gamesPage = computed(() => this.gamesResource.value());
@@ -381,10 +385,12 @@ export class GamesPageComponent {
   }
 
   onPageChange(event: { page: number; pageSize: number }): void {
+    const sizeChanged = event.pageSize !== this.pageSize();
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        page: event.page > 1 ? event.page : null,
+        page: !sizeChanged && event.page > 1 ? event.page :null,
+        page_size: event.pageSize !== 20 ? event.pageSize : null,
       },
       queryParamsHandling: 'merge',
     });
