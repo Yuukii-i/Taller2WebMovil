@@ -212,6 +212,6 @@ Game data and images: IGDB (https://www.igdb.com).
 
 ## Capturas de pantalla
 
-(assets/image.png)
+![Imagen 1](assets/image.png)
 
-(assets/image1.png)
+![Imagen 2](assets/image1.png)
